@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>MWF Receipt</title>
+<style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .header { text-align: center; margin-bottom: 20px; }
+    .table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    .table th, .table td { border: 1px solid #000; padding: 6px; text-align: left; }
+    .footer { margin-top: 20px; font-size: 14px; }
+    .summary { font-weight: bold; margin-top: 15px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h2>Mayondo Wood & Furniture Ltd</h2>
+    <p>Official Receipt</p>
+</div>
+
+<p><b>Receipt No:</b> {{ sale.id }}</p>
+<p><b>Customer:</b> {{ sale.customer_name }}</p>
+<p><b>Date:</b> {{ sale.sale_date|date:"Y-m-d H:i" }}</p>
+<p><b>Payment Method:</b> {{ sale.payment_type|title }}</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Type</th>
+            <th>Qty</th>
+            <th>Unit Price</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ sale.product.name }}</td>
+            <td>{{ sale.product_type }}</td>
+            <td>{{ sale.quantity }}</td>
+            <td>{{ sale.product.product_price }}</td>
+            <td>{{ sale.subtotal }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<p class="summary">
+    <b>Transport Included:</b> {{ sale.transport_included|yesno:"Yes,No" }}<br>
+    {% if sale.transport_included %}
+        <b>Transport Fee (5%):</b> {{ sale.transport_fee }}
+    {% endif %}
+</p>
+
+<h3>Total: UGX {{ sale.total }}</h3>
+<button onclick="window.print()">Print Receipt</button>
+
+<div class="footer">
+    <p>Served by: {{ sale.sales_agent.username }}</p>
+</div>
+
+</body>
+</html>

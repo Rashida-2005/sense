@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Product Form{% endblock %}
+{% block content %}
+ {% include "includes/navs.html" %}
+<div class="form-container">
+<form method="post" action="{% url 'mayondo_app:product_create' %}" class="form-box" novalidate>
+
+  {% csrf_token %}
+  <h2 class="form-title">
+    {% if product %}Edit{% else %}Add{% endif %} Product
+  </h2>
+  {{ form|crispy }}
+  <div class="form-actions">
+    <button type="submit" class="btn-primary">Save</button>
+  </div>
+</form>
+</div>
+{% endblock %}

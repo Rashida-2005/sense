@@ -1,0 +1,26 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MWF{% block title %}{% endblock %}</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+{% block nav %}{% endblock  %}
+<main class="max-w-6xl mx-auto p-6">
+{% if messages %}
+{% for message in messages %}
+<div class="mb-2 p-2 rounded bg-green-100">{{ message }}</div>
+{% endfor %}
+{% endif %}
+{% block content %}{% endblock %}
+</main>
+ {% comment %} <footer style="Position: fixed; bottom: 0; width: 100%;"><br>
+      <p class="footer">&copy;Mayondo Wood and Furniture@2025 created by Abuba Rashida</p>
+    </footer>
+</body> {% endcomment %}
+ 
+</html>

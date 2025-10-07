@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+  </head>
+  <body class="background-body">
+    <div class="landing-container">
+      <div class="logo">
+        <h1>Mayondo Wood and Furniture</h1>
+      </div>
+      <p class="landing-description">
+        Welcome to Mayondo Wood and Furniture! Manage your sales and workflow
+        efficiently.
+      </p>
+      <div class="landing-buttons">
+        <a href="{% url 'mayondo_app:login' %}" class="landing-button">Login</a>
+        {% comment %} <a href="{% url 'mayondo_app:register' %}" class="landing-button">Register</a> {% endcomment %}
+      </div>
+    </div>
+  </body>
+  <footer>
+    <p class="footer">
+      &copy;Mayondo Wood and Furniture@2025 created by Abuba Rashida
+    </p>
+  </footer>
+</html>

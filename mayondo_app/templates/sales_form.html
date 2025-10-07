@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Record Sale{% endblock %}
+{% block content %}
+    {% include "includes/navs.html" %}
+<div class="sale-form-container max-w-2xl mx-auto bg-white p-6 rounded-lg shadow">
+    <h2 class="sale-form-title text-2xl font-bold mb-4">Record New Sale</h2>
+    <form method="post" class="space-y-4">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <div class="flex justify-end">
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                Save Sale
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

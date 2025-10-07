@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Stock Report{% endblock %}
+{% block content %}
+
+<h2 class="report-title">Stock Report</h2>
+
+<table class="sales-table">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Type</th>
+            <th>Stock Quantity</th>
+            <th>Cost Price</th>
+            <th>Product Price</th>
+            <th>Date Added</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in products %}
+        <tr>
+            <td>{{ p.name }}</td>
+            <td class="text-center">{{ p.get_type_display }}</td>
+            <td class="text-center">{{ p.stock_quantity }}</td>
+            <td class="text-center">{{ p.cost_price }}</td>
+            <td class="text-center">{{ p.product_price }}</td>
+            <td class="text-center">{{ p.date_added }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3 class="stock-low-title">Low Stock</h3>
+<ul class="stock-low-list">
+    {% for p in low_stock %}
+    <li class="stock-low-item">{{ p.name }} ({{ p.stock_quantity }} left)</li>
+    {% empty %}
+    <li class="stock-low-none">No low stock items.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

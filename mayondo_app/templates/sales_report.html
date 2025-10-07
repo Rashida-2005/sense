@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Sales Report{% endblock %}
+{% block content %}
+
+<h2 class="report-title">Sales Report</h2>
+
+<form method="get" class="report-filter-form">
+    <input type="date" name="start_date" value="{{ request.GET.start_date }}" class="report-input">
+    <input type="date" name="end_date" value="{{ request.GET.end_date }}" class="report-input">
+    <button class="report-button">Filter</button>
+</form>
+
+<table class="sales-table">
+    <thead>
+        <tr>
+            <th>Customer</th>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Total</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in sales %}
+        <tr>
+            <td>{{ s.customer_name.name }}</td>
+            <td>{{ s.product.name }}</td>
+            <td>{{ s.quantity }}</td>
+            <td>{{ s.total }}</td>
+            <td>{{ s.sale_date|date:"Y-m-d" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" class="sales-empty">No sales in this period.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="report-total">Total Sales: {{ total_sales_value }}</div>
+{% endblock %}
