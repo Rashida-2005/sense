@@ -130,5 +130,10 @@ STATICFILES_DIRS = [BASE_DIR/"static"]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "mayondo_app.CustomUser"
 LOGIN_REDIRECT_URL = 'dashboard' 
-LOGOUT_REDIRECT_URL = 'landing'  
+LOGOUT_REDIRECT_URL = '/'  
+LOGIN_URL = 'mayondo_app:login'
+AUTHENTICATION_BACKENDS = [
+    'mayondo_app.backends.EmailOrUsernameModelBackend',  # your custom backend path
+    'django.contrib.auth.backends.ModelBackend',
+]
 

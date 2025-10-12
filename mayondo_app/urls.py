@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path,include
-from mayondo_app.views import receipt_view,loginpage,registerpage,create_employee,product_deletepage,logoutpage,landing,dashboardpage,product_listpage,product_createpage,product_editpage,sales_listpage,stock_reportpage,sale_createpage,sales_reportpage,sale_createpage,employee_list,employee_delete,employee_editpage,sale_editpage,sale_deletepage
+from mayondo_app.views import receipt_view,loginpage,registerpage,product_deletepage,logoutpage,landing,dashboardpage,product_listpage,product_createpage,product_editpage,sales_listpage,stock_reportpage,sale_createpage,sales_reportpage,sale_createpage,sale_editpage,sale_deletepage
 
 
 app_name = 'mayondo_app'
@@ -12,6 +12,7 @@ urlpatterns = [
     path('register/',registerpage, name='register'),
     path('logout/',logoutpage, name='logout'),
     path('dashboard/',dashboardpage, name='dashboard'),
+    # path('user-dashboard/',user_dashboardpage, name='user_dashboard'),
 
     path('products/',product_listpage, name='product_list'),
     path('products/new/',product_createpage, name='product_create'),
@@ -24,10 +25,6 @@ urlpatterns = [
 
     path('reports/stock/',stock_reportpage, name='stock_report'),
     path('reports/sales/',sales_reportpage, name='sales_report'),
-    path('employees/new/', create_employee, name='create_employee'),
-    path('employees/', employee_list, name="employee_list"),
-    path('employees/<int:pk>/edit/', employee_editpage, name="employee_edit"),
-    path('employees/<int:pk>/delete/', employee_delete, name="employee_delete"),
     path('receipt/<int:sale_id>/', receipt_view, name='receipt'),
 
         

@@ -1,9 +1,65 @@
-{% extends "base.html" %}
-{% load static %}
-{% block title %}Sales List{% endblock %}
+ {% load static %}
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+     <script src="https://cdn.tailwindcss.com"></script>
+     <link rel="stylesheet" href="{% static 'css/style.css' %}" >
 
-{% block content %}
-<div class="sales-container">
+</head>
+<body class="mt-10 bg-[#52B788]">
+<nav class="fixed top-0 left-0 w-full bg-[#2D6A4F] text-white shadow-md z-50">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+    <!-- Left: Brand -->
+    <div class="flex items-center space-x-3 h-20">
+           <img src="{% static 'images/logo.png' %}" alt="Mayondo Logo" class="h-20 w-20 object-contain">
+      <h2 class="text-xl font-bold">Sales List</h2>
+    </div>
+
+    <!-- Center: Navigation Links -->
+    <div class="hidden md:flex space-x-4">
+      <a href="{% url 'mayondo_app:dashboard' %}" class="px-3 py-2 rounded hover:bg-[#52B788] transition">
+        Dashboard
+      </a>
+      <a href="{% url 'mayondo_app:sales_listpage' %}" class="px-3 py-2 rounded hover:bg-[#52B788] transition">
+        Sales
+      </a>
+      <a href="{% url 'mayondo_app:stock_report' %}" class="px-3 py-2 rounded hover:bg-[#52B788] transition">
+        Stock Reports
+      </a>
+      <a href="{% url 'mayondo_app:sales_report' %}" class="px-3 py-2 rounded hover:bg-[#52B788] transition">
+        Sales Reports
+      </a>
+
+      {% if user.role|lower == 'manager' or user.role|lower == 'admin' %}
+      <a href="{% url 'mayondo_app:product_list' %}" class="px-3 py-2 rounded hover:bg-[#52B788] transition">
+        Products
+      </a>
+      <a href="{% url 'mayondo_app:register' %}" class="px-3 py-2 rounded hover:bg-[#52B788] transition">
+        Add Employees
+      </a>
+      <a href="/admin/" class="px-3 py-2 rounded bg-green-600 hover:bg-[#52B788] transition">
+        Admin
+      </a>
+      {% endif %}
+    </div>
+
+    <!-- Right: User info + Logout -->
+    <div class="flex items-center space-x-3">
+      <span class="text-sm text-gray-200">
+         {{ user.username|title }} | {{ user.role|title }}
+      </span>
+      <a href="{% url 'mayondo_app:logout' %}" class="px-3 py-2 rounded text-white-300 hover:text-white hover:bg-[#52B788] transition">
+        Logout
+      </a>
+    </div>
+  </div>
+</nav>
+<div class="pt-20 px-4">
+</div>
+    <div class="sales-container">
     <div class="sales-header">
         <h1>Sales List</h1>
         <a href="{% url 'mayondo_app:sale_create' %}" class="btn-add-sale">Add New Sale</a>
@@ -36,7 +92,7 @@
                 <td>{{ s.total }}</td>
                 <td class="actions">
                 <a href="{% url 'mayondo_app:sale_edit' s.pk %}" class="btn-edit">Edit</a>
-                <a href="{% url 'mayondo_app:sale_delete' s.pk %}" class="btn-delete">Delete</a>
+                {% comment %} <a href="{% url 'mayondo_app: %}" class="btn-delete">View</a> {% endcomment %}
                 <a href="{% url 'mayondo_app:receipt' s.pk %}" class="btn-receipt">Receipt</a>
                 </td>
             </tr>
@@ -48,4 +104,14 @@
         </tbody>
     </table>
 </div>
-{% endblock content %}
+ <footer style="Position: fixed; bottom: 0; left: 0; width: 100%;"><br>
+      <p class="footer">&copy;Mayondo Wood and Furniture@2025 created by Abuba Rashida</p>
+    </footer>
+</body>
+</html>
+{% comment %} {% extends "base.html" %}
+
+
+{% block content %}
+
+{% endblock content %} {% endcomment %}

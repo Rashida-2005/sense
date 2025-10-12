@@ -4,50 +4,17 @@ from django.utils.timezone import now
 from django.contrib.auth import authenticate, login, get_user_model,logout
 from decimal import Decimal
 from .models import Product,Sale,Employee,CustomUser
-from mayondo_app.forms import ProductForm,SaleForm,RegisterForm,EmployeeForm
+from mayondo_app.forms import ProductForm,SaleForm,RegisterForm
 from django.db import IntegrityError
 from django.contrib import messages
 from django.db.models import Sum, Count
 from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm,LoginAuthenticationForm 
+from .decorators import role_required
 User = get_user_model()
 
 
-def create_employee(request):
-    if request.method == 'POST':
-        form = EmployeeForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('mayondo_app:employee_list')
-    else:
-        form = EmployeeForm()
-    return render(request, 'employee_form.html', {'form': form})
 
-def employee_editpage(request, pk):
-    Employee = get_object_or_404(Employee, pk=pk)
-    if request.method == 'POST':
-        form = EmployeeForm(request.POST, instance=Employee)
-        if form.is_valid():
-            form.save()
-            return redirect('employee_list')
-    else:
-        form = EmployeeForm(instance=Employee)
-    
-    return render(request, 'employee_form.html', {'form': form, 'product': Employee})
-
-def employee_delete(request, pk):
-    try:
-        employee = CustomUser.objects.get(pk=pk)
-        employee.delete()
-        messages.success(request, "Employee deleted successfully.")
-    except CustomUser.DoesNotExist:
-        messages.error(request, "Employee not found.")
-    return redirect("mayondo_app:employee_list")
-def employee_list(request):
-    users = CustomUser.objects.all()
-    return render(request, "employee_list.html", {"users": users})
-
-#landing page
 def landing(request):
     return render(request, 'index.html')
 
@@ -56,36 +23,28 @@ def logoutpage(request):
     logout(request)
     return render(request,'logout.html')
 
-
-
 # @login_required(login_url='mayondo_app:login')
 def dashboardpage(request):
     user = request.user
-    role = getattr(user, 'role', 'user')
-    
-    products = Product.objects.none()
-    sales = Sale.objects.none()
-    employees = CustomUser.objects.all()
+    role = getattr(user, 'role', 'user').lower()  # normalize role
 
-    # Safely get role
-    if hasattr(user, 'role'):
-        role = user.role
+    # Everyone can see all products
+    products = Product.objects.all()
+    # Admins and managers see all sales, users see only their own
+    sales = Sale.objects.all() if role in ['manager', 'admin'] else Sale.objects.filter(sales_agent=user)
+    # Employees list only for managers
+    employees = User.objects.all() if role == 'manager' else None
 
-    # Query products and sales based on role
-    if role == "manager":
-        products = Product.objects.all()
-        sales = Sale.objects.all()
-    else:
-        products = Product.objects.all()
-        sales = Sale.objects.all()
+    # Chart & stats
+    product_names = list(products.values_list('name', flat=True))
+    product_sales = [sales.filter(product=p).aggregate(total=Sum('quantity'))['total'] or 0 for p in products]
+    product_stock = list(products.values_list('stock_quantity', flat=True))
 
-    # Aggregated stats
     total_products = products.count()
     total_sales = sales.count()
     total_stock = products.aggregate(total=Sum('stock_quantity'))['total'] or 0
-
     top_product = sales.values('product__name').annotate(total_sold=Sum('quantity')).order_by('-total_sold').first()
-    employees_count = CustomUser.objects.count()  # if you track employees in your custom user model
+    employees_count = employees.count() if employees else 0
 
     context = {
         'role': role,
@@ -98,12 +57,11 @@ def dashboardpage(request):
         'products': products,
         'sales': sales,
         'employees': employees,
+        'product_names': product_names,
+        'product_sales': product_sales,
+        'product_stock': product_stock,
     }
     return render(request, 'dashboard.html', context)
- 
-
-
-
 
 # Product Views
 def product_listpage(request):
@@ -135,6 +93,7 @@ def product_editpage(request, pk):
     
     return render(request, 'products/product_form.html', {'form': form, 'product': product})
  
+
 def product_deletepage(request, pk):
     product = get_object_or_404(Product, pk=pk)
     product.delete()
@@ -143,6 +102,7 @@ def product_deletepage(request, pk):
 
     
 # Sale Views
+
 def sales_listpage(request):
     sales = Sale.objects.all().order_by('-sale_date')
     return render(request, 'sales_list.html', {'sales': sales})
@@ -157,6 +117,7 @@ def sale_createpage(request):
     else:
         form = SaleForm()
     return render(request, 'sales_form.html', {'form': form})
+
 
 def sale_editpage(request, pk):
     sale = get_object_or_404(Sale, pk=pk)
@@ -191,7 +152,6 @@ def stock_reportpage(request):
         'low_stock': low_stock
     })
 
-
 def sales_reportpage(request):
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
@@ -213,20 +173,62 @@ def receipt_view(request, sale_id):
     context = {"sale": sale}
     return render(request, "receipt.html", context)
 
+# Login page view
+# def loginpage(request):
+#     if request.method == 'POST':
+#         identifier = request.POST.get("identifier")
+#         password = request.POST.get("password")
+
+#         # Try authenticating by username
+#         user = authenticate(request, username=identifier, password=password)
+
+#         # If username fails, try email
+#         if user is None:
+#             try:
+#                 user_obj = User.objects.get(email=identifier)
+#                 user = authenticate(request, username=user_obj.username, password=password)
+#             except User.DoesNotExist:
+#                 user = None
+
+#         if user is not None:
+#             login(request, user)
+#          # Redirect based on role
+#             role = getattr(user, 'role', 'user').lower()
+#             if role in ["manager", "admin"]:
+#                 return redirect("mayondo_app:dashboard")
+#         messages.error(request, "Invalid credentials")
+#         return redirect("mayondo_app:login")
+#     form = LoginAuthenticationForm()
+#     return render(request, "login.html", {"form": form})
 
 def loginpage(request):
-    if request.method == 'POST':
-        form = LoginAuthenticationForm(request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request,user)
-            return redirect('mayondo_app:dashboard')
-        else:
-            print(form.errors)
-    else:  
-        form = LoginAuthenticationForm()
-    context = {"form": form}
-    return render(request, "login.html", context)
+    if request.method == "POST":
+        identifier = request.POST.get("identifier")
+        password = request.POST.get("password")
+
+        # Try authenticate by username first
+        user = authenticate(request, username=identifier, password=password)
+
+        # If username fails, try email
+        if user is None:
+            try:
+                user_obj = User.objects.get(email=identifier)
+                user = authenticate(request, username=user_obj.username, password=password)
+            except User.DoesNotExist:
+                user = None
+
+        if user is not None:
+            login(request, user)
+            # Redirect everyone to dashboard
+            return redirect("mayondo_app:dashboard")
+
+        # If authentication failed
+        messages.error(request, "Invalid credentials")
+        return redirect("mayondo_app:login")
+
+    # GET request
+    form = LoginAuthenticationForm()
+    return render(request, "login.html", {"form": form})
 
 def registerpage(request):
     if request.method == 'POST':

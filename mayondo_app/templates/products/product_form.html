@@ -1,11 +1,67 @@
-{% extends 'base.html' %}
+{% load static %}
 {% load crispy_forms_tags %}
-{% block title %}Product Form{% endblock %}
-{% block content %}
- {% include "includes/navs.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+     <link rel="stylesheet" href="{% static 'css/style.css' %}" >
+</head>
+<body class="mt-10 bg-[#52B788]">
+
+  <nav class="fixed top-0 left-0 w-full bg-[#2D6A4F] text-white shadow-md z-50">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+    <!-- Left: Brand -->
+    <div class="flex items-center space-x-3 h-20">
+           <img src="{% static 'images/logo.png' %}" alt="Mayondo Logo" class="h-10 w-10 object-contain">
+      <h2 class="text-xl font-bold">Add Stocks</h2>
+    </div>
+
+    <!-- Center: Navigation Links -->
+    <div class="hidden md:flex space-x-4">
+      <a href="{% url 'mayondo_app:dashboard' %}" class="px-3 py-2 rounded hover:bg-green-700 transition">
+        Dashboard
+      </a>
+      <a href="{% url 'mayondo_app:sales_listpage' %}" class="px-3 py-2 rounded hover:bg-green-700 transition">
+        Sales
+      </a>
+      <a href="{% url 'mayondo_app:stock_report' %}" class="px-3 py-2 rounded hover:bg-green-700 transition">
+        Stock Reports
+      </a>
+      <a href="{% url 'mayondo_app:sales_report' %}" class="px-3 py-2 rounded hover:bg-green-700 transition">
+        Sales Reports
+      </a>
+
+      {% if user.role|lower == 'manager' or user.role|lower == 'admin' %}
+      <a href="{% url 'mayondo_app:product_list' %}" class="px-3 py-2 rounded hover:bg-green-700 transition">
+        Products
+      </a>
+      <a href="{% url 'mayondo_app:register' %}" class="px-3 py-2 rounded hover:bg-green-700 transition">
+        Add Employees
+      </a>
+      <a href="/admin/" class="px-3 py-2 rounded bg-green-600 hover:bg-green-700 transition">
+        Admin
+      </a>
+      {% endif %}
+    </div>
+
+    <!-- Right: User info + Logout -->
+    <div class="flex items-center space-x-3">
+      <span class="text-sm text-gray-200">
+         {{ user.username|title }} | {{ user.role|title }}
+      </span>
+      <a href="{% url 'mayondo_app:logout' %}" class="px-3 py-2 rounded text-red-300 hover:text-white hover:bg-red-500 transition">
+        Logout
+      </a>
+    </div>
+  </div>
+</nav>
+<div class="pt-20 px-4">
+
 <div class="form-container">
 <form method="post" action="{% url 'mayondo_app:product_create' %}" class="form-box" novalidate>
-
   {% csrf_token %}
   <h2 class="form-title">
     {% if product %}Edit{% else %}Add{% endif %} Product
@@ -16,4 +72,9 @@
   </div>
 </form>
 </div>
-{% endblock %}
+ <footer style="Position: fixed; bottom: 0; left: 0; width: 100%;"><br>
+      <p class="footer">&copy;Mayondo Wood and Furniture@2025 created by Abuba Rashida</p>
+    </footer>
+</body>
+</html>
+

@@ -3,8 +3,35 @@
     display: flex;
     justify-content: center;
     margin-top: 2.5rem;
-
+    padding: 1rem;
+    margin-bottom: 20px;
+    padding-bottom: 100px;
 }
+
+/* Style the form itself */
+.form-container form {
+    width: 90%;
+    max-width: 450px;
+    /* limits width so it’s not too wide */
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Fix input widths */
+.form-container input,
+.form-container select,
+.form-container textarea {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Keep footer visible and button clickable */
+/* footer {
+    margin-top: 3rem;
+    text-align: center;
+} */
 
  .form-box {
     background: #fff;
@@ -55,7 +82,7 @@
 /* Button */
 .btn-primary {
     padding: 0.5rem 1.5rem;
-    background: #4f46e5;
+    background: #52b788;
     color: #fff;
     border: none;
     border-radius: 0.25rem;
@@ -64,7 +91,7 @@
 }
 
 .btn-primary:hover {
-    background: #4338ca;
+    background: #52b788;
 }
 
 /* PRODUCT_LIST  */
@@ -91,7 +118,7 @@
 
 /* Add Button */
 .btn-add {
-    background-color: #2563eb;
+    background-color: #2d6a4f;
     color: white;
     padding: 10px 16px;
     border-radius: 8px;
@@ -100,7 +127,7 @@
 }
 
 .btn-add:hover {
-    background-color: #1d4ed8;
+    background-color: #2d6a4f;
 }
 
 /* Table */
@@ -220,7 +247,7 @@
 
 .sale-form-button {
     padding: 10px 18px;
-    background: #4f46e5;
+    background: #52b788;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -234,7 +261,7 @@
 
 
 .sale-form-button:hover {
-    background: #4338ca;
+    background: #52b788;
 }
 
 /* SALES_LIST */
@@ -262,7 +289,7 @@
 
 .btn-add-sale {
     text-decoration: none;
-    background-color: #4CAF50;
+    background-color: #2d6a4f;
     color: white;
     padding: 10px 18px;
     border-radius: 5px;
@@ -271,7 +298,7 @@
 }
 
 .btn-add-sale:hover {
-    background-color: #45a049;
+    background-color: #2d6a4f;
 }
 
 /* Table styling */
@@ -300,14 +327,18 @@
     padding: 5px;
 
 }
-
-.sales-table tr:nth-child(even) {
-    background-color: #f9f9f9;
+/* Table row hover effect */
+.sales-table tr {
+    transition: background-color 0.3s ease;
+    /* smooth hover */
 }
 
 .sales-table tr:hover {
-    background-color: #f1f1f1;
+    background-color: #d1e7d3;
+    cursor: pointer;
+   
 }
+
 
 /* Empty table row */
 .sales-empty {
@@ -336,7 +367,7 @@
 
 /* Button colors */
 .btn-edit {
-    background-color: #2196F3;
+    background-color: #2d6a4f;
 }
 
 .btn-delete {
@@ -344,12 +375,12 @@
 }
 
 .btn-receipt {
-    background-color: #4CAF50;
+    background-color: #40916c;
 }
 
 /* Hover effects */
 .btn-edit:hover {
-    background-color: #1976D2;
+    background-color: #2d6a4f;
 }
 
 .btn-delete:hover {
@@ -357,7 +388,7 @@
 }
 
 .btn-receipt:hover {
-    background-color: #45a049;
+    background-color: #40916c;
 }
 
 /* SALES_REPORT  */
@@ -431,7 +462,7 @@
 .dashboard-wrapper {
     padding: 1.5rem;
     min-height: 100vh;
-    background-color: 90CAF9;
+    background-color: #52b788;
    
 }
 
@@ -451,7 +482,7 @@
 }
 
 .summary-card {
-    background-color: white;
+    background-color: #2d6a4f;
     padding: 1.5rem;
     text-align: center;
     border-radius: 1rem;
@@ -462,7 +493,7 @@
 .summary-card h2 {
     font-size: 1.125rem;
     font-weight: 600;
-    color: #4B5563;
+    color: white;
   
 }
 
@@ -474,15 +505,15 @@
 
 /* Color classes for numbers */
 .text-indigo {
-    color: #4F46E5;
+    color: 4F46E5;
 }
 
 .text-blue {
-    color: #3B82F6;
+    color: white;
 }
 
 .text-red {
-    color: #EF4444;
+    color: white;
 }
 
 /* Role-specific actions */
@@ -661,7 +692,7 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f5f7fa;
+    background-color: #52b788;
     padding: 20px;
 }
 
@@ -711,7 +742,7 @@
 
 .form-content input:focus {
     outline: none;
-    border-color: #007bff;
+    border-color: #2d6a4f;
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
 }
 
@@ -719,7 +750,7 @@
 .btn-submit {
     width: 100%;
     padding: 0.85rem;
-    background-color: #007bff;
+    background-color: #2d6a4f;
     color: #ffffff;
     font-size: 1.1rem;
     border: none;
@@ -729,7 +760,7 @@
 }
 
 .btn-submit:hover {
-    background-color: #0056b3;
+    background-color: #2d6a4f;
 }
 
 /* Footer */
@@ -756,13 +787,13 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f5f5f5;
+    background-color: #52b788;
     padding: 20px; 
  }
 
 /* The card container */
 .login-card {
-    background-color: #fff;
+    background-color: white;
     padding: 3rem 2.5rem;
     border-radius: 8px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
@@ -815,7 +846,7 @@
     padding: 0.85rem;
     margin-top: 0.5rem;
     font-size: 1.1rem;
-    background-color: #007bff;
+    background-color: #2d6a4f;
     color: white;
     border: none;
     border-radius: 4px;
@@ -824,7 +855,7 @@
 } 
 
 .btn-login:hover {
-    background-color: #0056b3;
+    background-color: #2d6a4f;
 } 
 
 /* Footer/link */
@@ -847,9 +878,9 @@
 
  .footer {
     text-align: center;
-    padding: 15px;
-    background-color: #3e2f1c;
+    padding: 20px;
+    background-color: #2d6a4f;
     color: #fff;
-    margin-top: 40px;
+    /* margin-top: 40px; */
     border-radius: 0 0 8px 8px;
  }

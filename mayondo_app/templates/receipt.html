@@ -4,59 +4,166 @@
 <meta charset="utf-8">
 <title>MWF Receipt</title>
 <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    .header { text-align: center; margin-bottom: 20px; }
-    .table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    .table th, .table td { border: 1px solid #000; padding: 6px; text-align: left; }
-    .footer { margin-top: 20px; font-size: 14px; }
-    .summary { font-weight: bold; margin-top: 15px; }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+    }
+
+    .receipt-container {
+        width: 700px;
+        margin: 40px auto;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    .header {
+        text-align: center;
+        border-bottom: 2px solid #52B788;
+        padding-bottom: 15px;
+        margin-bottom: 25px;
+    }
+
+    .header h2 {
+        margin: 0;
+        color: #52B788;
+        font-size: 26px;
+    }
+
+    .header p {
+        margin: 5px 0 0;
+        font-size: 16px;
+        color: #555;
+    }
+
+    .info {
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+
+    .info p {
+        margin: 4px 0;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .table th, .table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .table th {
+        background-color: #52B788;
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .summary {
+        font-size: 16px;
+        margin-bottom: 20px;
+        text-align: right;
+    }
+
+    .summary b {
+        margin-right: 10px;
+    }
+
+    .total {
+        font-size: 20px;
+        font-weight: bold;
+        color: #52B788;
+        text-align: right;
+        margin-bottom: 25px;
+    }
+
+    .footer {
+        text-align: center;
+        font-size: 14px;
+        color: #777;
+        border-top: 1px solid #ddd;
+        padding-top: 15px;
+    }
+
+    .print-btn {
+        display: block;
+        width: 150px;
+        margin: 0 auto 20px;
+        padding: 10px 15px;
+        background-color: #52B788;
+        color: #fff;
+        text-align: center;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.2s;
+    }
+
+    .print-btn:hover {
+        background-color: #40916c;
+    }
 </style>
 </head>
 <body>
 
-<div class="header">
-    <h2>Mayondo Wood & Furniture Ltd</h2>
-    <p>Official Receipt</p>
-</div>
+<div class="receipt-container">
+    <div class="header">
+        <h2>Mayondo Wood & Furniture Ltd</h2>
+        <p>Official Receipt</p>
+    </div>
 
-<p><b>Receipt No:</b> {{ sale.id }}</p>
-<p><b>Customer:</b> {{ sale.customer_name }}</p>
-<p><b>Date:</b> {{ sale.sale_date|date:"Y-m-d H:i" }}</p>
-<p><b>Payment Method:</b> {{ sale.payment_type|title }}</p>
+    <div class="info">
+        <p><b>Receipt No:</b> {{ sale.id }}</p>
+        <p><b>Customer:</b> {{ sale.customer_name }}</p>
+        <p><b>Date:</b> {{ sale.sale_date|date:"Y-m-d H:i" }}</p>
+        <p><b>Payment Method:</b> {{ sale.payment_type|title }}</p>
+    </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Product</th>
-            <th>Type</th>
-            <th>Qty</th>
-            <th>Unit Price</th>
-            <th>Subtotal</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>{{ sale.product.name }}</td>
-            <td>{{ sale.product_type }}</td>
-            <td>{{ sale.quantity }}</td>
-            <td>{{ sale.product.product_price }}</td>
-            <td>{{ sale.subtotal }}</td>
-        </tr>
-    </tbody>
-</table>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Type</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ sale.product.name }}</td>
+                <td>{{ sale.product_type }}</td>
+                <td>{{ sale.quantity }}</td>
+                <td>{{ sale.product.product_price }}</td>
+                <td>{{ sale.subtotal }}</td>
+            </tr>
+        </tbody>
+    </table>
 
-<p class="summary">
-    <b>Transport Included:</b> {{ sale.transport_included|yesno:"Yes,No" }}<br>
-    {% if sale.transport_included %}
-        <b>Transport Fee (5%):</b> {{ sale.transport_fee }}
-    {% endif %}
-</p>
+    <div class="summary">
+        <p><b>Transport Included:</b> {{ sale.transport_included|yesno:"Yes,No" }}</p>
+        {% if sale.transport_included %}
+        <p><b>Transport Fee (5%):</b> {{ sale.transport_fee }}</p>
+        {% endif %}
+    </div>
 
-<h3>Total: UGX {{ sale.total }}</h3>
-<button onclick="window.print()">Print Receipt</button>
+    <div class="total">
+        Total: UGX {{ sale.total }}
+    </div>
 
-<div class="footer">
-    <p>Served by: {{ sale.sales_agent.username }}</p>
+    <button class="print-btn" onclick="window.print()">Print Receipt</button>
+
+    <div class="footer">
+        Served by: {{ sale.sales_agent.username }}
+    </div>
 </div>
 
 </body>
