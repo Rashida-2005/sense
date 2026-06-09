@@ -1,0 +1,4 @@
+echo "Django==5.0" > requirements.txt
+echo "gunicorn==21.2.0" >> requirements.txt
+echo "psycopg2-binary==2.9.9" >> requirements.txt
+echo "whitenoise==6.6.0" >> requirements.txt
